@@ -1,5 +1,4 @@
-sucre
-=====
+# 🍬 sucre
 
 ECS helper
 
@@ -13,7 +12,7 @@ ECS helper
 * [Commands](#commands)
 <!-- tocstop -->
 
-# Usage
+## Usage
 
 <!-- usage -->
 ```sh-session
@@ -29,13 +28,13 @@ USAGE
 ```
 <!-- usagestop -->
 
-# Commands
+## Commands
 
 <!-- commands -->
 * [`sucre hello`](#sucre-hello)
 * [`sucre help [COMMAND]`](#sucre-help-command)
 
-## `sucre hello`
+### `sucre hello`
 
 Describe the command here
 
@@ -53,7 +52,7 @@ DESCRIPTION
 
 _See code: [src/commands/hello.js](https://github.com/mateomurphy/sucre/blob/v0.1.0/src/commands/hello.js)_
 
-## `sucre help [COMMAND]`
+### `sucre help [COMMAND]`
 
 display help for sucre
 
