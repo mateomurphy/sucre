@@ -8,8 +8,7 @@ ECS helper
 [![License](https://img.shields.io/npm/l/sucre.svg)](https://github.com/mateomurphy/sucre/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+* [🍬 sucre](#-sucre)
 <!-- tocstop -->
 
 ## Usage
@@ -20,7 +19,7 @@ $ npm install -g sucre
 $ sucre COMMAND
 running command...
 $ sucre (-v|--version|version)
-sucre/0.1.0 darwin-x64 node-v11.14.0
+sucre/0.2.0 darwin-x64 node-v11.14.0
 $ sucre --help [COMMAND]
 USAGE
   $ sucre COMMAND
@@ -31,28 +30,10 @@ USAGE
 ## Commands
 
 <!-- commands -->
-* [`sucre hello`](#sucre-hello)
 * [`sucre help [COMMAND]`](#sucre-help-command)
+* [`sucre logs [LOGGROUPNAME]`](#sucre-logs-loggroupname)
 
-### `sucre hello`
-
-Describe the command here
-
-```
-USAGE
-  $ sucre hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/hello.js](https://github.com/mateomurphy/sucre/blob/v0.1.0/src/commands/hello.js)_
-
-### `sucre help [COMMAND]`
+## `sucre help [COMMAND]`
 
 display help for sucre
 
@@ -68,4 +49,21 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6/src/commands/help.ts)_
+
+## `sucre logs [LOGGROUPNAME]`
+
+Retrieves logs
+
+```
+USAGE
+  $ sucre logs [LOGGROUPNAME]
+
+OPTIONS
+  -e, --env=env  environment
+  -n, --num=num  number of lines to display
+  --start=start  start of the time range
+  --stop=stop    end of the time range
+```
+
+_See code: [src/commands/logs.js](https://github.com/mateomurphy/sucre/blob/v0.2.0/src/commands/logs.js)_
 <!-- commandsstop -->
