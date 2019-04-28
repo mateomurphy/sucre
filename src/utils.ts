@@ -1,6 +1,6 @@
 import parseDuration from 'parse-duration'
 import { isValid, parse } from 'date-fns'
-import { FilteredLogEvent } from 'aws-sdk/clients/cloudwatchlogs';
+import { FilteredLogEvent } from 'aws-sdk/clients/cloudwatchlogs'
 
 export function handleTime(string: string | undefined) {
   const now = new Date().getTime()
