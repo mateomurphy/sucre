@@ -1,4 +1,5 @@
-# 🍬 sucre
+🍬 sucre
+========
 
 ECS helper
 
@@ -11,7 +12,7 @@ ECS helper
 * [🍬 sucre](#-sucre)
 <!-- tocstop -->
 
-## Usage
+# Usage
 
 <!-- usage -->
 ```sh-session
@@ -27,7 +28,7 @@ USAGE
 ```
 <!-- usagestop -->
 
-## Commands
+# Commands
 
 <!-- commands -->
 * [`sucre help [COMMAND]`](#sucre-help-command)
