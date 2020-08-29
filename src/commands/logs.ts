@@ -79,6 +79,10 @@ export class LogsCommand extends Command {
             this.log(formatEvent(event));
           });
         }
+
+        if (data.nextToken) {
+          this.fetch({ ...params, nextToken: data.nextToken });
+        }
       }
     });
   }
