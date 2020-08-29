@@ -12,6 +12,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^2",
     "aws-sdk": "^2.444.0",
+    "colors": "^1.4.0",
     "date-fns": "^2.0.0",
     "parse-duration": "^0.1.1",
     "tslib": "^1"

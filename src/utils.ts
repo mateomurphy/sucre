@@ -1,6 +1,7 @@
-import parseDuration from "parse-duration";
-import { isValid, parse } from "date-fns";
 import { FilteredLogEvent } from "aws-sdk/clients/cloudwatchlogs";
+import colors from "colors/safe";
+import { isValid, parse } from "date-fns";
+import parseDuration from "parse-duration";
 
 export function handleTime(string: string | undefined) {
   const now = new Date().getTime();
@@ -23,5 +24,7 @@ export function formatEvent(event: FilteredLogEvent) {
     ? new Date(event.timestamp).toISOString()
     : "unknown";
 
-  return `[${date}] (${event.logStreamName}) ${event.message}`;
+  return `[${colors.yellow(date)}] (${colors.cyan(
+    event.logStreamName || ""
+  )}) ${colors.reset(event.message || "")}`;
 }
