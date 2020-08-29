@@ -10,13 +10,19 @@ export class LogsCommand extends Command {
   static args = [{ name: "logGroupName" }];
 
   static flags = {
-    env: flags.string({ char: "e", description: "environment" }),
+    // env: flags.string({ char: "e", description: "environment" }),
     num: flags.integer({
       char: "n",
       description: "number of lines to display",
     }),
-    start: flags.string({ description: "start of the time range" }),
-    stop: flags.string({ description: "end of the time range" }),
+    start: flags.string({
+      char: "s",
+      description: "start of the time range",
+    }),
+    end: flags.string({
+      char: "e",
+      description: "end of the time range",
+    }),
   };
 
   async run() {
@@ -26,7 +32,7 @@ export class LogsCommand extends Command {
 
     const logGroupName = args.logGroupName;
     const startTime = handleTime(flags.start);
-    const endTime = handleTime(flags.stop);
+    const endTime = handleTime(flags.end);
 
     var params = {
       interleaved: true,
