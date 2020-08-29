@@ -12,18 +12,22 @@ export class LogsCommand extends Command {
   static args = [{ name: "logGroupName" }];
 
   static flags = {
-    // env: flags.string({ char: "e", description: "environment" }),
+    end: flags.string({
+      char: "e",
+      description: "end of the time range",
+    }),
+    // env: flags.string({description: "environment" }),
     num: flags.integer({
       char: "n",
       description: "number of lines to display",
     }),
+    prefix: flags.string({
+      char: "p",
+      description: "filter log stream by prefix",
+    }),
     start: flags.string({
       char: "s",
       description: "start of the time range",
-    }),
-    end: flags.string({
-      char: "e",
-      description: "end of the time range",
     }),
     tail: flags.boolean({ char: "t", description: "tail logs" }),
   };
@@ -37,11 +41,12 @@ export class LogsCommand extends Command {
     const endTime = handleTime(flags.end);
 
     var params = {
-      interleaved: true,
-      logGroupName: logGroupName,
-      startTime: startTime,
       endTime: endTime,
+      interleaved: true,
       limit: flags.num || 1000,
+      logGroupName: logGroupName,
+      logStreamNamePrefix: flags.prefix,
+      startTime: startTime,
     };
 
     this.fetch(params);
