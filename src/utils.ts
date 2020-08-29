@@ -2,6 +2,7 @@ import { FilteredLogEvent } from "aws-sdk/clients/cloudwatchlogs";
 import colors from "colors/safe";
 import { isValid, parse } from "date-fns";
 import parseDuration from "parse-duration";
+import { format } from "util";
 
 export function handleTime(string: string | undefined) {
   const now = new Date().getTime();
@@ -19,12 +20,19 @@ export function handleTime(string: string | undefined) {
   return now - Math.abs(parseDuration(string));
 }
 
-export function formatEvent(event: FilteredLogEvent) {
-  const date = event.timestamp
-    ? new Date(event.timestamp).toISOString()
-    : "unknown";
+export function formatTimestamp(timestamp: number | undefined) {
+  if (!timestamp) {
+    return "-";
+  }
 
-  return `[${colors.yellow(date)}] (${colors.cyan(
-    event.logStreamName || ""
-  )}) ${colors.reset(event.message || "")}`;
+  return new Date(timestamp).toISOString();
+}
+
+export function formatEvent(event: FilteredLogEvent) {
+  return format(
+    "[%s] (%s) %s",
+    colors.yellow(formatTimestamp(event.timestamp)),
+    colors.cyan(event.logStreamName || ""),
+    colors.reset(event.message || "")
+  );
 }
