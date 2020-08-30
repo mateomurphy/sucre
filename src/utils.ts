@@ -4,6 +4,8 @@ import colors from "colors/safe";
 import { isValid, parse } from "date-fns";
 import parseDuration from "parse-duration";
 import { format } from "util";
+import { parse as parseArn } from "@sandfox/arn";
+import { basename } from "path";
 
 export function handleTime(string: string | undefined) {
   const now = new Date().getTime();
@@ -72,6 +74,11 @@ export async function* paginateManually(func: Function, params: any) {
       throw err;
     }
   } while (true);
+}
+
+export function resourceName(arnSring: string | undefined) {
+  const arn = parseArn(arnSring || "");
+  return basename(arn.resource);
 }
 
 export function promisify(obj: any, func: string) {

@@ -217,6 +217,11 @@
     tslint-eslint-rules "^5.4.0"
     tslint-xo "^0.9.0"
 
+"@sandfox/arn@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@sandfox/arn/-/arn-2.1.0.tgz#bfe308167fef299705507aa40b17312c872470f2"
+  integrity sha512-KUW6t0yJ4YZ6RBoB+8/ypVhDI+ZAvrLtZxQC+1i0yD2SvWe4RXboLXB4wcmsjw+g+gMBeyYu9sQj4NTx787+FA==
+
 "@types/chai@*", "@types/chai@^4":
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.7.tgz#1b8e33b61a8c09cbe1f85133071baa0dbf9fa71a"
