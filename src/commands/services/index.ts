@@ -1,4 +1,5 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
+import Command from "../../base";
 import { cli } from "cli-ux";
 import colors from "colors/safe";
 import AWS from "aws-sdk";
@@ -24,7 +25,7 @@ export class ServicesCommand extends Command {
     const { argv, flags } = this.parse(ServicesCommand);
     // const taskName = args.taskName;
 
-    const cluster = "api";
+    const cluster = this.userConfig.cluster;
 
     const { serviceArns } = await listServices({ cluster });
 

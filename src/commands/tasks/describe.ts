@@ -1,4 +1,5 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
+import Command from "../../base";
 import AWS from "aws-sdk";
 
 AWS.config.update({ region: "us-east-1" });
@@ -19,7 +20,7 @@ export class TasksDescribeCommand extends Command {
     const { argv, flags } = this.parse(TasksDescribeCommand);
     // const taskName = args.taskName;
 
-    const cluster = "api";
+    const cluster = this.userConfig.cluster;
     const taskDefinition = "mentorly-stage";
 
     const params = {

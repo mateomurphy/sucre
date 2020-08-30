@@ -1,4 +1,5 @@
-import { Command, flags } from "@oclif/command";
+// import { flags } from "@oclif/command";
+import Command from "../../base";
 import { cli } from "cli-ux";
 import colors from "colors/safe";
 import AWS from "aws-sdk";
@@ -15,6 +16,8 @@ export class StreamsCommand extends Command {
   static args = [{ name: "logGroupNamePrefix" }];
 
   async run() {
+    console.log(this.userConfig);
+
     const { args, flags } = this.parse(StreamsCommand);
     const logGroupNamePrefix = args.logGroupNamePrefix;
 

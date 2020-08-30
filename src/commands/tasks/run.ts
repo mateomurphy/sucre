@@ -1,4 +1,5 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
+import Command from "../../base";
 import AWS from "aws-sdk";
 import colors from "colors/safe";
 import cli from "cli-ux";
@@ -23,7 +24,7 @@ export class RunCommand extends Command {
     const { argv, flags } = this.parse(RunCommand);
     // const taskName = args.taskName;
 
-    const cluster = "api";
+    const cluster = this.userConfig.cluster;
     const taskDefinition = "mentorly-stage";
     const command = argv.flatMap((arg) => arg.split(" "));
 
