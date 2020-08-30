@@ -31,7 +31,7 @@ export function formatTimestamp(timestamp: number | undefined) {
   return new Date(timestamp).toISOString();
 }
 
-export function formatEvent(event: FilteredLogEvent) {
+export function formatLogEvent(event: FilteredLogEvent) {
   return format(
     "[%s] (%s) %s",
     colors.yellow(formatTimestamp(event.timestamp)),

@@ -1,6 +1,6 @@
 import { Command, flags } from "@oclif/command";
 import AWS from "aws-sdk";
-import { formatEvent, handleTime, paginate, promisify } from "../../utils";
+import { formatLogEvent, handleTime, paginate, promisify } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
@@ -77,7 +77,7 @@ export class LogsCommand extends Command {
         if (event.timestamp) {
           this.updateLastSeenTime(event.timestamp + 1);
         }
-        this.log(formatEvent(event));
+        this.log(formatLogEvent(event));
       });
     }
   }
