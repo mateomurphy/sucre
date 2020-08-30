@@ -2,11 +2,12 @@ import { Command, flags } from "@oclif/command";
 import { cli } from "cli-ux";
 import colors from "colors/safe";
 import AWS from "aws-sdk";
-import { formatTimestamp } from "../../utils";
+import { formatTimestamp, promisify } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
 const cloudwatchlogs = new AWS.CloudWatchLogs();
+const describeLogStreams = promisify(cloudwatchlogs, "describeLogStreams");
 
 export class StreamsCommand extends Command {
   static description = `Retrieves log streams`;
@@ -27,29 +28,25 @@ export class StreamsCommand extends Command {
     this.fetch(params);
   }
 
-  fetch(params: AWS.CloudWatchLogs.DescribeLogStreamsRequest) {
-    cloudwatchlogs.describeLogStreams(params, (err, data) => {
-      if (err) {
-        this.error(err);
-      } else {
-        if (data.logStreams) {
-          cli.table(data.logStreams, {
-            logStreamName: {
-              header: "Name",
-              get: (row) => colors.cyan(row.logStreamName || ""),
-            },
-            lastEventTimestamp: {
-              header: "Last Event",
-              get: (row) =>
-                colors.yellow(formatTimestamp(row.lastEventTimestamp)),
-            },
-            creationTime: {
-              header: "Creation Time",
-              get: (row) => colors.green(formatTimestamp(row.creationTime)),
-            },
-          });
-        }
-      }
-    });
+  async fetch(params: AWS.CloudWatchLogs.DescribeLogStreamsRequest) {
+    const data = await describeLogStreams(params);
+
+    if (data.logStreams) {
+      cli.table(data.logStreams, {
+        logStreamName: {
+          header: "Name",
+          get: (row: any) => colors.cyan(row.logStreamName || ""),
+        },
+        lastEventTimestamp: {
+          header: "Last Event",
+          get: (row: any) =>
+            colors.yellow(formatTimestamp(row.lastEventTimestamp)),
+        },
+        creationTime: {
+          header: "Creation Time",
+          get: (row: any) => colors.green(formatTimestamp(row.creationTime)),
+        },
+      });
+    }
   }
 }
