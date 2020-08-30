@@ -1,10 +1,11 @@
 import { Command, flags } from "@oclif/command";
 import AWS from "aws-sdk";
-import { formatEvent, handleTime } from "../../utils";
+import { formatEvent, handleTime, paginate, promisify } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
 const cloudwatchlogs = new AWS.CloudWatchLogs();
+const filterLogEvents = promisify(cloudwatchlogs, "filterLogEvents");
 
 export class LogsCommand extends Command {
   static description = `Retrieves logs`;
@@ -64,28 +65,24 @@ export class LogsCommand extends Command {
     }
   }
 
-  updateLastSeenTime(time: number | undefined) {
-    this.lastSeenTime = time;
+  async fetch(params: AWS.CloudWatchLogs.FilterLogEventsRequest) {
+    for await (let data of paginate(filterLogEvents, params)) {
+      this.outputLogEvents(data);
+    }
   }
 
-  fetch(params: AWS.CloudWatchLogs.FilterLogEventsRequest) {
-    cloudwatchlogs.filterLogEvents(params, (err, data) => {
-      if (err) {
-        this.error(err);
-      } else {
-        if (data.events) {
-          data.events.forEach((event) => {
-            if (event.timestamp) {
-              this.updateLastSeenTime(event.timestamp + 1);
-            }
-            this.log(formatEvent(event));
-          });
+  outputLogEvents(data: AWS.CloudWatchLogs.FilterLogEventsResponse) {
+    if (data.events) {
+      data.events.forEach((event) => {
+        if (event.timestamp) {
+          this.updateLastSeenTime(event.timestamp + 1);
         }
+        this.log(formatEvent(event));
+      });
+    }
+  }
 
-        if (data.nextToken) {
-          this.fetch({ ...params, nextToken: data.nextToken });
-        }
-      }
-    });
+  updateLastSeenTime(time: number | undefined) {
+    this.lastSeenTime = time;
   }
 }
