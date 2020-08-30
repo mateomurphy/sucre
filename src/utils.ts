@@ -36,3 +36,17 @@ export function formatEvent(event: FilteredLogEvent) {
     colors.reset(event.message || "")
   );
 }
+
+export function promisify(obj: any, func: string) {
+  return function (params: any) {
+    return new Promise<any>((resolve, reject) => {
+      obj[func](params, (err: Object, data: Object) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+}
