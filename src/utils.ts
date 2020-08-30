@@ -1,4 +1,5 @@
 import { FilteredLogEvent } from "aws-sdk/clients/cloudwatchlogs";
+import { cli } from "cli-ux";
 import colors from "colors/safe";
 import { isValid, parse } from "date-fns";
 import parseDuration from "parse-duration";
@@ -35,6 +36,42 @@ export function formatEvent(event: FilteredLogEvent) {
     colors.cyan(event.logStreamName || ""),
     colors.reset(event.message || "")
   );
+}
+
+export async function* paginate(func: Function, params: any) {
+  let requestParams = { ...params };
+
+  do {
+    const result = await func(requestParams);
+    yield result;
+
+    requestParams = { ...params, nextToken: result.nextToken };
+  } while (requestParams.nextToken);
+
+  return;
+}
+
+export async function* paginateManually(func: Function, params: any) {
+  const iterator = paginate(func, params);
+
+  do {
+    const { value } = await iterator.next();
+    yield value;
+
+    if (!value.nextToken) {
+      break;
+    }
+
+    try {
+      await cli.anykey();
+    } catch (err) {
+      if (err.message === "quit") {
+        break;
+      }
+
+      throw err;
+    }
+  } while (true);
 }
 
 export function promisify(obj: any, func: string) {
