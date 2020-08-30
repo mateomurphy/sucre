@@ -23,10 +23,6 @@ export class StreamsCommand extends Command {
       logGroupNamePrefix: logGroupNamePrefix,
     };
 
-    this.fetch(params);
-  }
-
-  async fetch(params: AWS.CloudWatchLogs.DescribeLogGroupsRequest) {
     for await (let value of paginateManually(describeLogGroups, params)) {
       outputLogGroups(value);
     }

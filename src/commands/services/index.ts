@@ -2,7 +2,7 @@ import { Command, flags } from "@oclif/command";
 import { cli } from "cli-ux";
 import colors from "colors/safe";
 import AWS from "aws-sdk";
-import { promisify, resourceName } from "../../utils";
+import { coloredStatus, promisify, resourceName } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
@@ -28,12 +28,10 @@ export class ServicesCommand extends Command {
 
     const { serviceArns } = await listServices({ cluster });
 
-    const params = {
+    const data = await describeServices({
       cluster: cluster,
       services: serviceArns,
-    };
-
-    const data = await describeServices(params);
+    });
 
     outputServices(data);
   }
@@ -51,13 +49,7 @@ function outputServices(data: AWS.ECS.DescribeServicesResponse) {
     },
     status: {
       header: "Status",
-      get: (row) => {
-        if (row.status === "ACTIVE") {
-          return colors.green("ACTIVE");
-        }
-
-        return row.status;
-      },
+      get: (row) => coloredStatus(row.status),
     },
     taskDefinition: {
       header: "Task definition",

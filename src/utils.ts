@@ -7,18 +7,52 @@ import { format, inspect } from "util";
 import { parse as parseArn } from "@sandfox/arn";
 import { basename } from "path";
 
+const green = [
+  "PRIMARY",
+  "ACTIVE",
+  "RUNNING",
+  "HEALTHY",
+  "STEADY_STATE",
+  "UPDATED",
+  "STAGED",
+];
+const yellow = [
+  "DRAINING",
+  "PENDING",
+  "REGISTERING",
+  "DEREGISTERING",
+  "PROVISIONING",
+  "DEPROVISIONING",
+  "UPDATING",
+  "STABILIZING",
+  "STAGING",
+];
+const red = [
+  "UNHEALTHY",
+  "REGISTRATION_FAILED",
+  "FAILED",
+  "INACTIVE",
+  "STOPPED",
+];
+
 export function coloredStatus(string: string | undefined) {
   if (!string) {
     return "";
   }
-  switch (string) {
-    case "ACTIVE":
-      return colors.green("ACTIVE");
-    case "RUNNING":
-      return colors.green("ACTIVE");
-    default:
-      return string;
+
+  if (green.includes(string)) {
+    return colors.green(string);
   }
+
+  if (red.includes(string)) {
+    return colors.red(string);
+  }
+
+  if (yellow.includes(string)) {
+    return colors.yellow(string);
+  }
+
+  return string;
 }
 
 export function handleTime(string: string | undefined) {

@@ -33,15 +33,6 @@ export class StreamsCommand extends Command {
       orderBy: "LastEventTime",
     };
 
-    this.fetch(params);
-  }
-
-  async catch(error: Error) {
-    console.log("caught error");
-    // console.error(error);
-  }
-
-  async fetch(params: AWS.CloudWatchLogs.DescribeLogStreamsRequest) {
     for await (let value of paginateManually(describeLogStreams, params)) {
       outputLogStreams(value);
     }
