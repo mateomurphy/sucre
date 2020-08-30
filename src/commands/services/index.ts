@@ -2,7 +2,7 @@ import { Command, flags } from "@oclif/command";
 import { cli } from "cli-ux";
 import colors from "colors/safe";
 import AWS from "aws-sdk";
-import { promisify, resourceName } from "../utils";
+import { promisify, resourceName } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
@@ -35,44 +35,44 @@ export class ServicesCommand extends Command {
 
     const data = await describeServices(params);
 
-    this.outputServices(data);
+    outputServices(data);
+  }
+}
+
+function outputServices(data: AWS.ECS.DescribeServicesResponse) {
+  if (!data.services) {
+    return "No data";
   }
 
-  outputServices(data: AWS.ECS.DescribeServicesResponse) {
-    if (!data.services) {
-      return "No data";
-    }
+  cli.table(data.services, {
+    name: {
+      header: "Name",
+      get: (row) => colors.cyan(row.serviceName || "Unknown"),
+    },
+    status: {
+      header: "Status",
+      get: (row) => {
+        if (row.status === "ACTIVE") {
+          return colors.green("ACTIVE");
+        }
 
-    cli.table(data.services, {
-      name: {
-        header: "Name",
-        get: (row) => colors.cyan(row.serviceName || "Unknown"),
+        return row.status;
       },
-      status: {
-        header: "Status",
-        get: (row) => {
-          if (row.status === "ACTIVE") {
-            return colors.green("ACTIVE");
-          }
-
-          return row.status;
-        },
+    },
+    taskDefinition: {
+      header: "Task definition",
+      get: (row) => {
+        return resourceName(row.taskDefinition);
       },
-      taskDefinition: {
-        header: "Task definition",
-        get: (row) => {
-          return resourceName(row.taskDefinition);
-        },
-      },
-      desiredCount: {
-        header: "Desired",
-      },
-      runningCount: {
-        header: "Running",
-      },
-      pendingCount: {
-        header: "Pending",
-      },
-    });
-  }
+    },
+    desiredCount: {
+      header: "Desired",
+    },
+    runningCount: {
+      header: "Running",
+    },
+    pendingCount: {
+      header: "Pending",
+    },
+  });
 }

@@ -3,9 +3,23 @@ import { cli } from "cli-ux";
 import colors from "colors/safe";
 import { isValid, parse } from "date-fns";
 import parseDuration from "parse-duration";
-import { format } from "util";
+import { format, inspect } from "util";
 import { parse as parseArn } from "@sandfox/arn";
 import { basename } from "path";
+
+export function coloredStatus(string: string | undefined) {
+  if (!string) {
+    return "";
+  }
+  switch (string) {
+    case "ACTIVE":
+      return colors.green("ACTIVE");
+    case "RUNNING":
+      return colors.green("ACTIVE");
+    default:
+      return string;
+  }
+}
 
 export function handleTime(string: string | undefined) {
   const now = new Date().getTime();
@@ -38,6 +52,12 @@ export function formatLogEvent(event: FilteredLogEvent) {
     colors.cyan(event.logStreamName || ""),
     colors.reset(event.message || "")
   );
+}
+
+export function log(message = "", ...args: any[]) {
+  // tslint:disable-next-line strict-type-predicates
+  message = typeof message === "string" ? message : inspect(message);
+  process.stdout.write(format(message, ...args) + "\n");
 }
 
 export async function* paginate(func: Function, params: any) {
