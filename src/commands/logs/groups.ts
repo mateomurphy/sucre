@@ -2,46 +2,39 @@ import { Command, flags } from "@oclif/command";
 import { cli } from "cli-ux";
 import colors from "colors/safe";
 import AWS from "aws-sdk";
-import { formatTimestamp } from "../utils";
+import { formatTimestamp } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
 const cloudwatchlogs = new AWS.CloudWatchLogs();
 
 export class StreamsCommand extends Command {
-  static description = `Retrieves log streams`;
+  static description = `Retrieves log groups`;
 
-  static args = [{ name: "logGroupName" }];
+  static args = [{ name: "logGroupNamePrefix" }];
 
   async run() {
     const { args, flags } = this.parse(StreamsCommand);
-    const logGroupName = args.logGroupName;
+    const logGroupNamePrefix = args.logGroupNamePrefix;
 
     const params = {
-      descending: true,
       limit: 50,
-      logGroupName: logGroupName,
-      orderBy: "LastEventTime",
+      logGroupNamePrefix: logGroupNamePrefix,
     };
 
     this.fetch(params);
   }
 
-  fetch(params: AWS.CloudWatchLogs.DescribeLogStreamsRequest) {
-    cloudwatchlogs.describeLogStreams(params, (err, data) => {
+  fetch(params: AWS.CloudWatchLogs.DescribeLogGroupsRequest) {
+    cloudwatchlogs.describeLogGroups(params, (err, data) => {
       if (err) {
         this.error(err);
       } else {
-        if (data.logStreams) {
-          cli.table(data.logStreams, {
+        if (data.logGroups) {
+          cli.table(data.logGroups, {
             logStreamName: {
               header: "Name",
-              get: (row) => colors.cyan(row.logStreamName || ""),
-            },
-            lastEventTimestamp: {
-              header: "Last Event",
-              get: (row) =>
-                colors.yellow(formatTimestamp(row.lastEventTimestamp)),
+              get: (row) => colors.cyan(row.logGroupName || ""),
             },
             creationTime: {
               header: "Creation Time",

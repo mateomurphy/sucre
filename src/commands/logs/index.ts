@@ -1,6 +1,6 @@
 import { Command, flags } from "@oclif/command";
 import AWS from "aws-sdk";
-import { formatEvent, handleTime } from "../utils";
+import { formatEvent, handleTime } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
@@ -53,6 +53,8 @@ export class LogsCommand extends Command {
 
     if (flags.tail) {
       delete params.endTime;
+      delete params.limit;
+
       setInterval(() => {
         if (this.lastSeenTime) {
           params.startTime = this.lastSeenTime;
