@@ -72,7 +72,7 @@ export class RunCommand extends Command {
       cli.action.stop();
       await this.fetchLogs(resourceName(taskArn));
     } else {
-      cli.action.stop();
+      cli.action.stop("No task run");
     }
   }
 
