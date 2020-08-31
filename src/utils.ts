@@ -1,6 +1,6 @@
 import { FilteredLogEvent } from "aws-sdk/clients/cloudwatchlogs";
 import { cli } from "cli-ux";
-import colors from "colors/safe";
+import colors from "chalk";
 import { isValid, parse } from "date-fns";
 import parseDuration from "parse-duration";
 import { format, inspect } from "util";

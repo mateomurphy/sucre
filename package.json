@@ -14,7 +14,7 @@
     "@sandfox/arn": "^2.1.0",
     "@types/fs-extra": "^9.0.1",
     "aws-sdk": "^2.444.0",
-    "colors": "^1.4.0",
+    "chalk": "^4.1.0",
     "date-fns": "^2.0.0",
     "parse-duration": "^0.1.1",
     "tslib": "^1"

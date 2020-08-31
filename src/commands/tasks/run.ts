@@ -1,7 +1,7 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
 import AWS from "aws-sdk";
-import colors from "colors/safe";
+import colors from "chalk";
 import cli from "cli-ux";
 import { format } from "util";
 import { formatTimestamp, promisify, resourceName } from "../../utils";
