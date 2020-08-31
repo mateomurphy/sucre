@@ -1,6 +1,5 @@
 import Command, { flags } from "@oclif/command";
 import * as fs from "fs";
-import * as fsExtra from "fs-extra";
 import * as path from "path";
 
 interface UserConfig {
@@ -18,7 +17,9 @@ export default abstract class extends Command {
 
     try {
       await fs.promises.access(configPath);
-      this.userConfig = await fsExtra.readJSON(configPath);
+      this.userConfig = JSON.parse(
+        await fs.promises.readFile(configPath, { encoding: "utf8" })
+      );
     } catch (err) {
       console.error(err);
     }
