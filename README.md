@@ -21,7 +21,7 @@ $ npm install -g sucre
 $ sucre COMMAND
 running command...
 $ sucre (-v|--version|version)
-sucre/0.3.0 darwin-x64 node-v11.14.0
+sucre/0.3.1 darwin-x64 node-v11.14.0
 $ sucre --help [COMMAND]
 USAGE
   $ sucre COMMAND
@@ -73,7 +73,7 @@ OPTIONS
   -t, --tail           tail logs
 ```
 
-_See code: [src/commands/logs/index.ts](https://github.com/mateomurphy/sucre/blob/v0.3.0/src/commands/logs/index.ts)_
+_See code: [src/commands/logs/index.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/logs/index.ts)_
 
 ## `sucre logs:groups [LOGGROUPNAMEPREFIX]`
 
@@ -84,7 +84,7 @@ USAGE
   $ sucre logs:groups [LOGGROUPNAMEPREFIX]
 ```
 
-_See code: [src/commands/logs/groups.ts](https://github.com/mateomurphy/sucre/blob/v0.3.0/src/commands/logs/groups.ts)_
+_See code: [src/commands/logs/groups.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/logs/groups.ts)_
 
 ## `sucre logs:streams [LOGGROUPNAME]`
 
@@ -98,7 +98,7 @@ OPTIONS
   -p, --prefix=prefix  filter log stream by prefix
 ```
 
-_See code: [src/commands/logs/streams.ts](https://github.com/mateomurphy/sucre/blob/v0.3.0/src/commands/logs/streams.ts)_
+_See code: [src/commands/logs/streams.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/logs/streams.ts)_
 
 ## `sucre services`
 
@@ -112,7 +112,7 @@ OPTIONS
   -c, --cluster=cluster  the cluster of the services
 ```
 
-_See code: [src/commands/services/index.ts](https://github.com/mateomurphy/sucre/blob/v0.3.0/src/commands/services/index.ts)_
+_See code: [src/commands/services/index.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/services/index.ts)_
 
 ## `sucre services:info [SERVICENAME]`
 
@@ -127,7 +127,7 @@ OPTIONS
   -e, --events           Output events
 ```
 
-_See code: [src/commands/services/info.ts](https://github.com/mateomurphy/sucre/blob/v0.3.0/src/commands/services/info.ts)_
+_See code: [src/commands/services/info.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/services/info.ts)_
 
 ## `sucre tasks:run`
 
@@ -144,5 +144,5 @@ ALIASES
   $ sucre run
 ```
 
-_See code: [src/commands/tasks/run.ts](https://github.com/mateomurphy/sucre/blob/v0.3.0/src/commands/tasks/run.ts)_
+_See code: [src/commands/tasks/run.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/tasks/run.ts)_
 <!-- commandsstop -->
