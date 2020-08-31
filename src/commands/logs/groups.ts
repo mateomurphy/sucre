@@ -16,8 +16,6 @@ export class StreamsCommand extends Command {
   static args = [{ name: "logGroupNamePrefix" }];
 
   async run() {
-    console.log(this.userConfig);
-
     const { args, flags } = this.parse(StreamsCommand);
     const logGroupNamePrefix = args.logGroupNamePrefix;
 
