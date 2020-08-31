@@ -130,8 +130,12 @@ export async function* paginateManually(func: Function, params: any) {
   } while (true);
 }
 
-export function resourceName(arnSring: string | undefined) {
-  const arn = parseArn(arnSring || "");
+export function resourceName(arnString: string | undefined) {
+  if (!arnString) {
+    return "";
+  }
+
+  const arn = parseArn(arnString);
   return basename(arn.resource);
 }
 
