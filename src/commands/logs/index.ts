@@ -64,11 +64,11 @@ export class LogsCommand extends Command {
 
   async fetch(params: AWS.CloudWatchLogs.FilterLogEventsRequest) {
     for await (let data of paginate(filterLogEvents, params)) {
-      this.outputLogEvents(data);
+      this.renderLogEvents(data);
     }
   }
 
-  outputLogEvents(data: AWS.CloudWatchLogs.FilterLogEventsResponse) {
+  renderLogEvents(data: AWS.CloudWatchLogs.FilterLogEventsResponse) {
     if (data.events) {
       data.events.forEach((event) => {
         if (event.timestamp) {

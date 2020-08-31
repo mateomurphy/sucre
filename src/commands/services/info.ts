@@ -1,10 +1,13 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
-import { cli } from "cli-ux";
 import colors from "chalk";
-import AWS from "aws-sdk";
 import { describeServices, describeTasks, listTasks } from "../../api/ecs";
-import { coloredStatus, log, resourceName } from "../../utils";
+import { log } from "../../utils";
+import {
+  renderServiceInfo,
+  renderTasks,
+  renderServiceEvents,
+} from "../../render";
 
 export class ServicesInfoCommand extends Command {
   static description = `describe a service`;
@@ -45,82 +48,12 @@ export class ServicesInfoCommand extends Command {
       tasks: tasks.taskArns,
     });
 
-    outputServiceInfo(services);
+    renderServiceInfo(services);
     log(colors.bold("\nTasks"));
-    outputTasks(taskData);
+    renderTasks(taskData);
     if (flags.events) {
       log(colors.bold("\nEvents"));
-      outputEvents(services);
+      renderServiceEvents(services);
     }
   }
-}
-
-function outputTasks(data: AWS.ECS.DescribeTasksResponse) {
-  if (!data.tasks) {
-    return "No data";
-  }
-
-  cli.table(data.tasks, {
-    taskArn: {
-      header: "Task",
-      get: (row) => colors.cyan(resourceName(row.taskArn)),
-    },
-    taskDefinitionArn: {
-      header: "Task definition",
-      get: (row) => resourceName(row.taskDefinitionArn),
-    },
-    lastStatus: {
-      header: "Last status",
-      get: (row) => coloredStatus(row.lastStatus),
-    },
-    desiredStatus: {
-      header: "Desired status",
-      get: (row) => row.lastStatus,
-    },
-    group: {},
-    launchType: {},
-  });
-}
-
-function outputEvents(data: AWS.ECS.DescribeServicesResponse) {
-  if (!data.services) {
-    return "No data";
-  }
-
-  const events = data.services[0].events || [];
-
-  cli.table(events, {
-    createdAt: {
-      header: "Created at",
-      get: (row) =>
-        colors.yellow(row.createdAt ? row.createdAt.toISOString() : ""),
-    },
-    message: { header: "Message" },
-    id: { header: "ID", extended: true },
-  });
-}
-
-function outputServiceInfo(data: AWS.ECS.DescribeServicesResponse) {
-  if (!data.services) {
-    return "No data";
-  }
-
-  const service = data.services[0];
-
-  const tableData = [
-    { value: service.serviceName, name: "Name" },
-    { value: coloredStatus(service.status), name: "Status" },
-    {
-      value: resourceName(service.taskDefinition),
-      name: "Task definition",
-    },
-    { value: service.schedulingStrategy, name: "Service type" },
-    { value: service.launchType, name: "Launch type" },
-    { value: resourceName(service.roleArn), name: "Service role" },
-    { value: service.desiredCount, name: "Desired count" },
-    { value: service.runningCount, name: "Running count" },
-    { value: service.pendingCount, name: "Pending count" },
-  ];
-
-  cli.table(tableData, { name: { minWidth: 17 }, value: {} });
 }

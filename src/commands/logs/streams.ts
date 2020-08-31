@@ -1,10 +1,8 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
-import { cli } from "cli-ux";
-import colors from "chalk";
-import AWS from "aws-sdk";
 import { describeLogStreams } from "../../api/cwl";
-import { formatTimestamp, paginateManually } from "../../utils";
+import { paginateManually } from "../../utils";
+import { renderLogStreams } from "../../render";
 
 export class StreamsCommand extends Command {
   static description = `retrieve log streams`;
@@ -31,28 +29,7 @@ export class StreamsCommand extends Command {
     };
 
     for await (let value of paginateManually(describeLogStreams, params)) {
-      outputLogStreams(value);
+      renderLogStreams(value);
     }
   }
-}
-
-function outputLogStreams(data: AWS.CloudWatchLogs.DescribeLogStreamsResponse) {
-  if (!data.logStreams) {
-    return "No data";
-  }
-
-  cli.table(data.logStreams, {
-    logStreamName: {
-      header: "Name",
-      get: (row) => colors.cyan(row.logStreamName || ""),
-    },
-    lastEventTimestamp: {
-      header: "Last Event",
-      get: (row) => colors.yellow(formatTimestamp(row.lastEventTimestamp)),
-    },
-    creationTime: {
-      header: "Creation Time",
-      get: (row) => colors.green(formatTimestamp(row.creationTime)),
-    },
-  });
 }
