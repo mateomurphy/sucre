@@ -12,12 +12,12 @@ const listServices = promisify(ecs, "listServices");
 const describeServices = promisify(ecs, "describeServices");
 
 export class ServicesCommand extends Command {
-  static description = `Describes services`;
+  static description = `describe services`;
 
   static flags = {
     cluster: flags.string({
       char: "c",
-      description: "the cluster to describe",
+      description: "the cluster of the services",
     }),
   };
 

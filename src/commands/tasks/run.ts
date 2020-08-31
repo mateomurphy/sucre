@@ -17,7 +17,7 @@ const getLogEvents = promisify(cloudWatchLogs, "getLogEvents");
 
 export class RunCommand extends Command {
   static aliases = ["run"];
-  static description = `Runs a command`;
+  static description = `run a one-off process inside a container`;
   static strict = false;
   static flags = {
     cluster: flags.string({
@@ -46,29 +46,34 @@ export class RunCommand extends Command {
       },
     };
 
-    cli.action.start(
-      format(
-        "Running %s on %s",
-        colors.white(command.join(" ")),
-        colors.cyan(taskDefinition || "")
-      )
+    const actionName = format(
+      "Running %s on %s",
+      colors.white(command.join(" ")),
+      colors.cyan(taskDefinition || "")
     );
+
+    cli.action.start(actionName);
 
     const data = await runTask(params);
 
     if (data && data.tasks) {
       const taskArn = data.tasks[0].taskArn;
-      this.log("Started task %s", colors.cyan(resourceName(taskArn)));
+      cli.action.start(
+        actionName,
+        format("Started task %s", colors.cyan(resourceName(taskArn)))
+      );
 
       const result = await waitFor("tasksStopped", {
         cluster: cluster,
         tasks: [taskArn],
       });
-      await cli.wait(3000);
-      await this.fetchLogs(resourceName(taskArn));
-    }
 
-    cli.action.stop();
+      await cli.wait(3000);
+      cli.action.stop();
+      await this.fetchLogs(resourceName(taskArn));
+    } else {
+      cli.action.stop();
+    }
   }
 
   async fetchLogs(taskUid: string) {

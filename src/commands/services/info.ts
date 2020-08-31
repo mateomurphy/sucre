@@ -13,14 +13,14 @@ const describeTasks = promisify(ecs, "describeTasks");
 const listTasks = promisify(ecs, "listTasks");
 
 export class ServicesInfoCommand extends Command {
-  static description = `Describes services`;
+  static description = `describe a service`;
 
   static args = [{ name: "serviceName" }];
 
   static flags = {
     cluster: flags.string({
       char: "c",
-      description: "the cluster to describe",
+      description: "the cluster of the service",
     }),
     events: flags.boolean({
       char: "e",

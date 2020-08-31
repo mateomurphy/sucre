@@ -8,7 +8,7 @@ const cloudwatchlogs = new AWS.CloudWatchLogs();
 const filterLogEvents = promisify(cloudwatchlogs, "filterLogEvents");
 
 export class LogsCommand extends Command {
-  static description = `Retrieves logs`;
+  static description = `retrieve logs`;
 
   static args = [{ name: "logGroupName" }];
 

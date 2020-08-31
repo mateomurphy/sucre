@@ -10,7 +10,7 @@ const cloudwatchlogs = new AWS.CloudWatchLogs();
 const describeLogStreams = promisify(cloudwatchlogs, "describeLogStreams");
 
 export class StreamsCommand extends Command {
-  static description = `Retrieves log streams`;
+  static description = `retrieve log streams`;
 
   static args = [{ name: "logGroupName" }];
 
