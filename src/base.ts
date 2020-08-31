@@ -1,6 +1,9 @@
 import Command, { flags } from "@oclif/command";
+import AWS from "aws-sdk";
 import * as fs from "fs";
 import * as path from "path";
+
+AWS.config.update({ region: "us-east-1" });
 
 interface UserConfig {
   cluster: string | undefined;

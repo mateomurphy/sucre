@@ -3,12 +3,8 @@ import Command from "../../base";
 import { cli } from "cli-ux";
 import colors from "chalk";
 import AWS from "aws-sdk";
-import { formatTimestamp, paginateManually, promisify } from "../../utils";
-
-AWS.config.update({ region: "us-east-1" });
-
-const cloudwatchlogs = new AWS.CloudWatchLogs();
-const describeLogGroups = promisify(cloudwatchlogs, "describeLogGroups");
+import { describeLogGroups } from "../../api/cwl";
+import { formatTimestamp, paginateManually } from "../../utils";
 
 export class StreamsCommand extends Command {
   static description = `retrieve log streams`;

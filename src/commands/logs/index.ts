@@ -1,11 +1,8 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
+import Command from "../../base";
 import AWS from "aws-sdk";
-import { formatLogEvent, handleTime, paginate, promisify } from "../../utils";
-
-AWS.config.update({ region: "us-east-1" });
-
-const cloudwatchlogs = new AWS.CloudWatchLogs();
-const filterLogEvents = promisify(cloudwatchlogs, "filterLogEvents");
+import { filterLogEvents } from "../../api/cwl";
+import { formatLogEvent, handleTime, paginate } from "../../utils";
 
 export class LogsCommand extends Command {
   static description = `retrieve logs`;

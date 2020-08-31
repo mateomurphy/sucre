@@ -3,13 +3,8 @@ import Command from "../../base";
 import { cli } from "cli-ux";
 import colors from "chalk";
 import AWS from "aws-sdk";
-import { coloredStatus, promisify, resourceName } from "../../utils";
-
-AWS.config.update({ region: "us-east-1" });
-
-const ecs = new AWS.ECS();
-const listServices = promisify(ecs, "listServices");
-const describeServices = promisify(ecs, "describeServices");
+import { describeServices, listServices } from "../../api/ecs";
+import { coloredStatus, resourceName } from "../../utils";
 
 export class ServicesCommand extends Command {
   static description = `describe services`;

@@ -4,16 +4,9 @@ import AWS from "aws-sdk";
 import colors from "chalk";
 import cli from "cli-ux";
 import { format } from "util";
-import { formatTimestamp, promisify, resourceName } from "../../utils";
-
-AWS.config.update({ region: "us-east-1" });
-
-const ecs = new AWS.ECS();
-const runTask = promisify(ecs, "runTask");
-const waitFor = promisify(ecs, "waitFor");
-
-const cloudWatchLogs = new AWS.CloudWatchLogs();
-const getLogEvents = promisify(cloudWatchLogs, "getLogEvents");
+import { getLogEvents } from "../../api/cwl";
+import { runTask, waitFor } from "../../api/ecs";
+import { formatTimestamp, resourceName } from "../../utils";
 
 export class RunCommand extends Command {
   static aliases = ["run"];
