@@ -5,6 +5,8 @@ import * as path from "path";
 
 interface UserConfig {
   cluster: string | undefined;
+  logGroupName: string | undefined;
+  logStreamNamePrefix: string | undefined;
   taskDefinition: string | undefined;
 }
 

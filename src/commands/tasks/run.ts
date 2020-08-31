@@ -4,10 +4,16 @@ import AWS from "aws-sdk";
 import colors from "colors/safe";
 import cli from "cli-ux";
 import { format } from "util";
+import { formatTimestamp, promisify, resourceName } from "../../utils";
 
 AWS.config.update({ region: "us-east-1" });
 
 const ecs = new AWS.ECS();
+const runTask = promisify(ecs, "runTask");
+const waitFor = promisify(ecs, "waitFor");
+
+const cloudWatchLogs = new AWS.CloudWatchLogs();
+const getLogEvents = promisify(cloudWatchLogs, "getLogEvents");
 
 export class RunCommand extends Command {
   static aliases = ["run"];
@@ -22,10 +28,9 @@ export class RunCommand extends Command {
 
   async run() {
     const { argv, flags } = this.parse(RunCommand);
-    // const taskName = args.taskName;
 
     const cluster = this.userConfig.cluster;
-    const taskDefinition = "mentorly-stage";
+    const taskDefinition = this.userConfig.taskDefinition;
     const command = argv.flatMap((arg) => arg.split(" "));
 
     const params = {
@@ -41,26 +46,49 @@ export class RunCommand extends Command {
       },
     };
 
-    console.log(command);
-
     cli.action.start(
       format(
         "Running %s on %s",
         colors.white(command.join(" ")),
-        colors.cyan(taskDefinition)
+        colors.cyan(taskDefinition || "")
       )
     );
 
-    ecs.runTask(params, (err, data) => {
-      if (err) {
-        this.error(err);
-      } else {
-        cli.action.stop();
-        if (data && data.tasks) {
-          const taskArn = data.tasks[0].taskArn;
-          console.log(taskArn);
-        }
-      }
+    const data = await runTask(params);
+
+    if (data && data.tasks) {
+      const taskArn = data.tasks[0].taskArn;
+      this.log("Started task %s", colors.cyan(resourceName(taskArn)));
+
+      const result = await waitFor("tasksStopped", {
+        cluster: cluster,
+        tasks: [taskArn],
+      });
+      await cli.wait(3000);
+      await this.fetchLogs(resourceName(taskArn));
+    }
+
+    cli.action.stop();
+  }
+
+  async fetchLogs(taskUid: string) {
+    const logGroupName = this.userConfig.logGroupName;
+    const logStreamNamePrefix = this.userConfig.logStreamNamePrefix;
+
+    const params = {
+      logGroupName,
+      logStreamName: `${logStreamNamePrefix}${taskUid}`,
+      startFromHead: true,
+    };
+
+    const data = await getLogEvents(params);
+
+    data.events.forEach((event: AWS.CloudWatchLogs.OutputLogEvent) => {
+      this.log(
+        "[%s] %s",
+        colors.yellow(formatTimestamp(event.timestamp)),
+        colors.reset(event.message || "")
+      );
     });
   }
 }

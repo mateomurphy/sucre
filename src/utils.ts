@@ -136,9 +136,9 @@ export function resourceName(arnSring: string | undefined) {
 }
 
 export function promisify(obj: any, func: string) {
-  return function (params: any) {
+  return function (...args: any[]) {
     return new Promise<any>((resolve, reject) => {
-      obj[func](params, (err: Object, data: Object) => {
+      obj[func](...args, (err: Object, data: Object) => {
         if (err) {
           reject(err);
         } else {
