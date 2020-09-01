@@ -15,6 +15,12 @@ interface UserConfig {
 export default abstract class extends Command {
   userConfig = {} as UserConfig;
 
+  async catch(error: Error) {
+    // do something or
+    // re-throw to be handled globally
+    throw error;
+  }
+
   async init() {
     const configPath = path.join(process.cwd(), "sucre.json");
 

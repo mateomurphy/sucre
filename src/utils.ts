@@ -103,8 +103,6 @@ export async function* paginate(func: Function, params: any) {
 
     requestParams = { ...params, nextToken: result.nextToken };
   } while (requestParams.nextToken);
-
-  return;
 }
 
 export async function* paginateManually(func: Function, params: any) {
@@ -130,6 +128,29 @@ export async function* paginateManually(func: Function, params: any) {
   } while (true);
 }
 
+export async function poll(active: boolean, func: Function) {
+  func();
+
+  if (!active) {
+    return;
+  }
+
+  setInterval(async () => {
+    func();
+  }, 3000);
+}
+
+export async function* pollingIterator(func: Function, params: any) {
+  let requestParams = { ...params };
+
+  do {
+    const result = await func(requestParams);
+    requestParams = yield result;
+
+    await sleep(3000);
+  } while (true);
+}
+
 export function resourceName(arnString: string | undefined) {
   if (!arnString) {
     return "";
@@ -137,4 +158,8 @@ export function resourceName(arnString: string | undefined) {
 
   const arn = parseArn(arnString);
   return basename(arn.resource);
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

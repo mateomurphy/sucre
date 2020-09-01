@@ -14,7 +14,10 @@
     "@sandfox/arn": "^2.1.0",
     "aws-sdk": "^2.444.0",
     "chalk": "^4.1.0",
+    "cli-cursor": "^3.1.0",
+    "console-clear": "^1.1.1",
     "date-fns": "^2.0.0",
+    "jetty": "^0.2.1",
     "parse-duration": "^0.1.1",
     "tslib": "^1"
   },
