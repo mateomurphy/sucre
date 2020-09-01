@@ -58,7 +58,7 @@ export class LogsCommand extends Command {
           params.startTime = this.lastSeenTime;
         }
         this.fetch(params);
-      }, 1000);
+      }, 3000);
     }
   }
 

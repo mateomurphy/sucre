@@ -82,7 +82,7 @@ export function renderServiceEvents(data: AWS.ECS.DescribeServicesResponse) {
     return "No data";
   }
 
-  const events = data.services[0].events || [];
+  const events = (data.services[0].events || []).slice(0, 20);
 
   cli.table(events, {
     createdAt: {
