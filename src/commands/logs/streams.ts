@@ -1,6 +1,6 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
-import { describeLogStreams } from "../../api/cwl";
+import cwl from "../../api/cwl";
 import { paginateManually } from "../../utils";
 import { renderLogStreams } from "../../render";
 
@@ -28,7 +28,7 @@ export class StreamsCommand extends Command {
       orderBy: "LastEventTime",
     };
 
-    for await (let value of paginateManually(describeLogStreams, params)) {
+    for await (let value of paginateManually(cwl.describeLogStreams, params)) {
       renderLogStreams(value);
     }
   }

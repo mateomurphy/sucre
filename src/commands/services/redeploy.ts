@@ -1,6 +1,6 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
-import { updateService } from "../../api/ecs";
+import ecs from "../../api/ecs";
 
 export class ServicesRedeployCommand extends Command {
   static description = `redeploys a service`;
@@ -26,7 +26,7 @@ export class ServicesRedeployCommand extends Command {
       service: serviceName,
     };
 
-    const data = await updateService(params);
+    const data = await ecs.updateService(params);
 
     console.log(data);
   }

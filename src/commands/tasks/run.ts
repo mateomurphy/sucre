@@ -4,8 +4,8 @@ import AWS from "aws-sdk";
 import colors from "chalk";
 import cli from "cli-ux";
 import { format } from "util";
-import { getLogEvents } from "../../api/cwl";
-import { runTask, waitFor } from "../../api/ecs";
+import cwl from "../../api/cwl";
+import ecs from "../../api/ecs";
 import { formatTimestamp, resourceName } from "../../utils";
 
 export class RunCommand extends Command {
@@ -17,13 +17,18 @@ export class RunCommand extends Command {
       char: "c",
       description: "the cluster to run on",
     }),
+    "task-definition": flags.string({
+      char: "t",
+      description: "the task definition to use",
+    }),
   };
 
   async run() {
     const { argv, flags } = this.parse(RunCommand);
 
     const cluster = this.userConfig.cluster;
-    const taskDefinition = this.userConfig.taskDefinition;
+    const taskDefinition =
+      flags["task-definition"] || this.userConfig.taskDefinition;
     const command = argv.flatMap((arg) => arg.split(" "));
 
     const params = {
@@ -47,7 +52,7 @@ export class RunCommand extends Command {
 
     cli.action.start(actionName);
 
-    const data = await runTask(params);
+    const data = await ecs.runTask(params);
 
     if (data && data.tasks) {
       const taskArn = data.tasks[0].taskArn;
@@ -56,7 +61,7 @@ export class RunCommand extends Command {
         format("Started task %s", colors.cyan(resourceName(taskArn)))
       );
 
-      const result = await waitFor("tasksStopped", {
+      const result = await ecs.waitFor("tasksStopped", {
         cluster: cluster,
         tasks: [taskArn],
       });
@@ -79,7 +84,7 @@ export class RunCommand extends Command {
       startFromHead: true,
     };
 
-    const data = await getLogEvents(params);
+    const data = await cwl.getLogEvents(params);
 
     data.events.forEach((event: AWS.CloudWatchLogs.OutputLogEvent) => {
       this.log(

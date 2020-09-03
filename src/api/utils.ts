@@ -11,3 +11,11 @@ export function promisify(obj: any, func: string) {
     });
   };
 }
+
+export function promiseProxy(obj: any) {
+  return new Proxy(obj, {
+    get(target, property) {
+      return promisify(target, property as string);
+    },
+  });
+}

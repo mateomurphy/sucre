@@ -1,6 +1,6 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
-import { describeServices, listServices } from "../../api/ecs";
+import ecs from "../../api/ecs";
 
 import { renderServices } from "../../render";
 
@@ -20,9 +20,9 @@ export class ServicesCommand extends Command {
 
     const cluster = this.userConfig.cluster;
 
-    const { serviceArns } = await listServices({ cluster });
+    const { serviceArns } = await ecs.listServices({ cluster });
 
-    const data = await describeServices({
+    const data = await ecs.describeServices({
       cluster: cluster,
       services: serviceArns,
     });

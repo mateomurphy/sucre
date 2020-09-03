@@ -1,7 +1,7 @@
 import { flags } from "@oclif/command";
 import Jetty from "jetty";
 import Command from "../../base";
-import { describeServices, describeTasks, listTasks } from "../../api/ecs";
+import ecs from "../../api/ecs";
 import { log, poll } from "../../utils";
 import {
   renderServiceInfo,
@@ -34,28 +34,35 @@ export class ServicesInfoCommand extends Command {
     const cluster = this.userConfig.cluster;
 
     poll(watch, async () => {
-      const [services, tasks] = await Promise.all([
-        describeServices({
-          cluster: cluster,
-          services: [serviceName],
-        }),
+      try {
+        const [services, tasks] = await Promise.all([
+          ecs.describeServices({
+            cluster: cluster,
+            services: [serviceName],
+          }),
 
-        listTasks({
-          cluster: cluster,
-          serviceName: serviceName,
-        }),
-      ]);
+          ecs.listTasks({
+            cluster: cluster,
+            serviceName: serviceName,
+          }),
+        ]);
 
-      const taskData = await describeTasks({
-        cluster: cluster,
-        tasks: tasks.taskArns,
-      });
-      jetty.clear().moveTo([0, 0]);
-      renderServiceInfo(services);
-      log();
-      renderTasks(taskData);
-      log();
-      renderServiceEvents(services);
+        const taskData = await ecs.describeTasks({
+          cluster: cluster,
+          tasks: tasks.taskArns,
+        });
+
+        jetty.clear().moveTo([0, 0]);
+        renderServiceInfo(services);
+        log();
+        renderTasks(taskData);
+        log();
+        renderServiceEvents(services);
+      } catch (ex) {
+        console.log("error");
+        console.error(ex);
+        return;
+      }
     });
   }
 }

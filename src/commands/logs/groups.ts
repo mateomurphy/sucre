@@ -1,6 +1,6 @@
 // import { flags } from "@oclif/command";
 import Command from "../../base";
-import { describeLogGroups } from "../../api/cwl";
+import cwl from "../../api/cwl";
 import { paginateManually } from "../../utils";
 import { renderLogGroups } from "../../render";
 
@@ -18,7 +18,7 @@ export class StreamsCommand extends Command {
       logGroupNamePrefix: logGroupNamePrefix,
     };
 
-    for await (let value of paginateManually(describeLogGroups, params)) {
+    for await (let value of paginateManually(cwl.describeLogGroups, params)) {
       renderLogGroups(value);
     }
   }

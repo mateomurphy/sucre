@@ -1,7 +1,7 @@
 import { flags } from "@oclif/command";
 import Command from "../../base";
 import AWS from "aws-sdk";
-import { filterLogEvents } from "../../api/cwl";
+import cwl from "../../api/cwl";
 import { formatLogEvent, handleTime, paginate } from "../../utils";
 
 export class LogsCommand extends Command {
@@ -63,7 +63,7 @@ export class LogsCommand extends Command {
   }
 
   async fetch(params: AWS.CloudWatchLogs.FilterLogEventsRequest) {
-    for await (let data of paginate(filterLogEvents, params)) {
+    for await (let data of paginate(cwl.filterLogEvents, params)) {
       this.renderLogEvents(data);
     }
   }
