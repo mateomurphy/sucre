@@ -17,6 +17,8 @@ export class RunCommand extends Command {
       char: "c",
       description: "the cluster to run on",
     }),
+    "log-group-name": flags.string(),
+    "log-stream-name-prefix": flags.string(),
     "task-definition": flags.string({
       char: "t",
       description: "the task definition to use",
@@ -26,9 +28,8 @@ export class RunCommand extends Command {
   async run() {
     const { argv, flags } = this.parse(RunCommand);
 
-    const cluster = this.userConfig.cluster;
-    const taskDefinition =
-      flags["task-definition"] || this.userConfig.taskDefinition;
+    const cluster = this.getFlag("cluster");
+    const taskDefinition = this.getFlag("task-definition");
     const command = argv.flatMap((arg) => arg.split(" "));
 
     const params = {
@@ -75,8 +76,8 @@ export class RunCommand extends Command {
   }
 
   async fetchLogs(taskUid: string) {
-    const logGroupName = this.userConfig.logGroupName;
-    const logStreamNamePrefix = this.userConfig.logStreamNamePrefix;
+    const logGroupName = this.getFlag("log-group-name");
+    const logStreamNamePrefix = this.getFlag("log-stream-name-prefix");
 
     const params = {
       logGroupName,

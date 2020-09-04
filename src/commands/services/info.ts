@@ -31,7 +31,7 @@ export class ServicesInfoCommand extends Command {
     const { args, flags } = this.parse(ServicesInfoCommand);
     const serviceName = args.serviceName;
     const watch = flags.watch;
-    const cluster = this.userConfig.cluster;
+    const cluster = this.getFlag("cluster");
 
     poll(watch, async () => {
       try {

@@ -18,7 +18,7 @@ export class ServicesRedeployCommand extends Command {
     const { args, flags } = this.parse(ServicesRedeployCommand);
     const serviceName = args.serviceName;
 
-    const cluster = this.userConfig.cluster || flags.cluster;
+    const cluster = this.getFlag("cluster");
 
     const params = {
       cluster: cluster,

@@ -15,10 +15,10 @@ export class ServicesCommand extends Command {
   };
 
   async run() {
-    const { argv, flags } = this.parse(ServicesCommand);
+    const { argv } = this.parse(ServicesCommand);
     // const taskName = args.taskName;
 
-    const cluster = this.userConfig.cluster;
+    const cluster = this.getFlag("cluster");
 
     const { serviceArns } = await ecs.listServices({ cluster });
 
