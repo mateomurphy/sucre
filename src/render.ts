@@ -1,7 +1,12 @@
 import AWS from "aws-sdk";
 import colors from "chalk";
 import { cli } from "cli-ux";
-import { coloredStatus, formatTimestamp, resourceName } from "./utils";
+import {
+  coloredStatus,
+  formatTimestamp,
+  formatServiceEventMessage,
+  resourceName,
+} from "./utils";
 
 export function renderLogGroups(
   data: AWS.CloudWatchLogs.DescribeLogGroupsResponse
@@ -90,7 +95,10 @@ export function renderServiceEvents(data: AWS.ECS.DescribeServicesResponse) {
       get: (row) =>
         colors.yellow(row.createdAt ? row.createdAt.toISOString() : ""),
     },
-    message: { header: "Message" },
+    message: {
+      header: "Message",
+      get: (row) => formatServiceEventMessage(row.message),
+    },
     id: { header: "ID", extended: true },
   });
 }

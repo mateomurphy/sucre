@@ -88,6 +88,15 @@ export function formatLogEvent(event: FilteredLogEvent) {
   );
 }
 
+const regexp = /\(([^\s]*)\s([^)]*)\)/gm;
+
+export function formatServiceEventMessage(message: string | undefined) {
+  return (message || "").replace(
+    regexp,
+    (_, p1, p2) => `${p1} ${colors.cyan(resourceName(p2))}`
+  );
+}
+
 export function log(message = "", ...args: any[]) {
   // tslint:disable-next-line strict-type-predicates
   message = typeof message === "string" ? message : inspect(message);
@@ -156,8 +165,12 @@ export function resourceName(arnString: string | undefined) {
     return "";
   }
 
+  if (!arnString.startsWith("arn:aws:")) {
+    return arnString;
+  }
+
   const arn = parseArn(arnString);
-  return basename(arn.resource);
+  return arn.resource.split("/")[1];
 }
 
 export function sleep(ms: number) {
