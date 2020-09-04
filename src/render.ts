@@ -3,6 +3,7 @@ import colors from "chalk";
 import { cli } from "cli-ux";
 import {
   coloredStatus,
+  formatDate,
   formatTimestamp,
   formatServiceEventMessage,
   resourceName,
@@ -91,9 +92,8 @@ export function renderServiceEvents(data: AWS.ECS.DescribeServicesResponse) {
 
   cli.table(events, {
     createdAt: {
-      header: "Created at",
-      get: (row) =>
-        colors.yellow(row.createdAt ? row.createdAt.toISOString() : ""),
+      header: "Time",
+      get: (row) => colors.yellow(formatDate(row.createdAt)),
     },
     message: {
       header: "Message",

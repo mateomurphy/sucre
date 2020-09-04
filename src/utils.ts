@@ -2,6 +2,7 @@ import { FilteredLogEvent } from "aws-sdk/clients/cloudwatchlogs";
 import { cli } from "cli-ux";
 import colors from "chalk";
 import { isValid, parse } from "date-fns";
+import { format as dateFormat } from "date-fns-tz";
 import parseDuration from "parse-duration";
 import { format, inspect } from "util";
 import { parse as parseArn } from "@sandfox/arn";
@@ -71,12 +72,20 @@ export function handleTime(string: string | undefined) {
   return now - Math.abs(parseDuration(string));
 }
 
+export function formatDate(date: Date | undefined) {
+  if (!date) {
+    return "-";
+  }
+
+  return dateFormat(date, "yyyy/MM/dd HH:mm:ss xx");
+}
+
 export function formatTimestamp(timestamp: number | undefined) {
   if (!timestamp) {
     return "-";
   }
 
-  return new Date(timestamp).toISOString();
+  return formatDate(new Date(timestamp));
 }
 
 export function formatLogEvent(event: FilteredLogEvent) {
