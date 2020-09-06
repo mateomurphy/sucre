@@ -21,7 +21,7 @@ $ npm install -g sucre
 $ sucre COMMAND
 running command...
 $ sucre (-v|--version|version)
-sucre/0.3.1 darwin-x64 node-v11.14.0
+sucre/0.4.0 darwin-x64 node-v11.14.0
 $ sucre --help [COMMAND]
 USAGE
   $ sucre COMMAND
@@ -38,6 +38,9 @@ USAGE
 * [`sucre logs:streams [LOGGROUPNAME]`](#sucre-logsstreams-loggroupname)
 * [`sucre services`](#sucre-services)
 * [`sucre services:info [SERVICENAME]`](#sucre-servicesinfo-servicename)
+* [`sucre services:redeploy [SERVICENAME]`](#sucre-servicesredeploy-servicename)
+* [`sucre tasks:definitions [FAMILYPREFIX]`](#sucre-tasksdefinitions-familyprefix)
+* [`sucre tasks:families`](#sucre-tasksfamilies)
 * [`sucre tasks:run`](#sucre-tasksrun)
 
 ## `sucre help [COMMAND]`
@@ -73,7 +76,7 @@ OPTIONS
   -t, --tail           tail logs
 ```
 
-_See code: [src/commands/logs/index.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/logs/index.ts)_
+_See code: [src/commands/logs/index.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/logs/index.ts)_
 
 ## `sucre logs:groups [LOGGROUPNAMEPREFIX]`
 
@@ -84,7 +87,7 @@ USAGE
   $ sucre logs:groups [LOGGROUPNAMEPREFIX]
 ```
 
-_See code: [src/commands/logs/groups.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/logs/groups.ts)_
+_See code: [src/commands/logs/groups.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/logs/groups.ts)_
 
 ## `sucre logs:streams [LOGGROUPNAME]`
 
@@ -98,7 +101,7 @@ OPTIONS
   -p, --prefix=prefix  filter log stream by prefix
 ```
 
-_See code: [src/commands/logs/streams.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/logs/streams.ts)_
+_See code: [src/commands/logs/streams.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/logs/streams.ts)_
 
 ## `sucre services`
 
@@ -109,10 +112,10 @@ USAGE
   $ sucre services
 
 OPTIONS
-  -c, --cluster=cluster  the cluster of the services
+  -C, --cluster=cluster  the cluster of the services
 ```
 
-_See code: [src/commands/services/index.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/services/index.ts)_
+_See code: [src/commands/services/index.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/services/index.ts)_
 
 ## `sucre services:info [SERVICENAME]`
 
@@ -123,11 +126,47 @@ USAGE
   $ sucre services:info [SERVICENAME]
 
 OPTIONS
-  -c, --cluster=cluster  the cluster of the service
-  -e, --events           Output events
+  -C, --cluster=cluster  the cluster of the service
+  -w, --watch            watch for changes
 ```
 
-_See code: [src/commands/services/info.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/services/info.ts)_
+_See code: [src/commands/services/info.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/services/info.ts)_
+
+## `sucre services:redeploy [SERVICENAME]`
+
+redeploys a service
+
+```
+USAGE
+  $ sucre services:redeploy [SERVICENAME]
+
+OPTIONS
+  -C, --cluster=cluster  the cluster of the service
+```
+
+_See code: [src/commands/services/redeploy.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/services/redeploy.ts)_
+
+## `sucre tasks:definitions [FAMILYPREFIX]`
+
+list task definitions
+
+```
+USAGE
+  $ sucre tasks:definitions [FAMILYPREFIX]
+```
+
+_See code: [src/commands/tasks/definitions.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/tasks/definitions.ts)_
+
+## `sucre tasks:families`
+
+list task definition families
+
+```
+USAGE
+  $ sucre tasks:families
+```
+
+_See code: [src/commands/tasks/families.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/tasks/families.ts)_
 
 ## `sucre tasks:run`
 
@@ -138,11 +177,16 @@ USAGE
   $ sucre tasks:run
 
 OPTIONS
-  -c, --cluster=cluster  the cluster to run on
+  -C, --cluster=cluster                            the cluster to run on
+  -c, --container=container                        the container to use
+  -f, --task-definition-path=task-definition-path  the path to a task definition json file
+  -t, --task-definition=task-definition            the task definition to use
+  --log-group-name=log-group-name
+  --log-stream-name-prefix=log-stream-name-prefix
 
 ALIASES
   $ sucre run
 ```
 
-_See code: [src/commands/tasks/run.ts](https://github.com/mateomurphy/sucre/blob/v0.3.1/src/commands/tasks/run.ts)_
+_See code: [src/commands/tasks/run.ts](https://github.com/mateomurphy/sucre/blob/v0.4.0/src/commands/tasks/run.ts)_
 <!-- commandsstop -->
