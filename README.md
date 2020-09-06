@@ -21,7 +21,7 @@ $ npm install -g sucre
 $ sucre COMMAND
 running command...
 $ sucre (-v|--version|version)
-sucre/0.4.1 darwin-x64 node-v11.14.0
+sucre/0.4.2 darwin-x64 node-v11.14.0
 $ sucre --help [COMMAND]
 USAGE
   $ sucre COMMAND
@@ -76,7 +76,7 @@ OPTIONS
   -t, --tail           tail logs
 ```
 
-_See code: [src/commands/logs/index.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/logs/index.ts)_
+_See code: [src/commands/logs/index.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/logs/index.ts)_
 
 ## `sucre logs:groups [LOGGROUPNAMEPREFIX]`
 
@@ -87,7 +87,7 @@ USAGE
   $ sucre logs:groups [LOGGROUPNAMEPREFIX]
 ```
 
-_See code: [src/commands/logs/groups.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/logs/groups.ts)_
+_See code: [src/commands/logs/groups.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/logs/groups.ts)_
 
 ## `sucre logs:streams [LOGGROUPNAME]`
 
@@ -101,7 +101,7 @@ OPTIONS
   -p, --prefix=prefix  filter log stream by prefix
 ```
 
-_See code: [src/commands/logs/streams.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/logs/streams.ts)_
+_See code: [src/commands/logs/streams.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/logs/streams.ts)_
 
 ## `sucre services`
 
@@ -115,7 +115,7 @@ OPTIONS
   -C, --cluster=cluster  the cluster of the services
 ```
 
-_See code: [src/commands/services/index.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/services/index.ts)_
+_See code: [src/commands/services/index.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/services/index.ts)_
 
 ## `sucre services:info [SERVICENAME]`
 
@@ -130,7 +130,7 @@ OPTIONS
   -w, --watch            watch for changes
 ```
 
-_See code: [src/commands/services/info.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/services/info.ts)_
+_See code: [src/commands/services/info.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/services/info.ts)_
 
 ## `sucre services:redeploy [SERVICENAME]`
 
@@ -144,7 +144,7 @@ OPTIONS
   -C, --cluster=cluster  the cluster of the service
 ```
 
-_See code: [src/commands/services/redeploy.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/services/redeploy.ts)_
+_See code: [src/commands/services/redeploy.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/services/redeploy.ts)_
 
 ## `sucre tasks:definitions [FAMILYPREFIX]`
 
@@ -155,7 +155,7 @@ USAGE
   $ sucre tasks:definitions [FAMILYPREFIX]
 ```
 
-_See code: [src/commands/tasks/definitions.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/tasks/definitions.ts)_
+_See code: [src/commands/tasks/definitions.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/tasks/definitions.ts)_
 
 ## `sucre tasks:families`
 
@@ -166,7 +166,7 @@ USAGE
   $ sucre tasks:families
 ```
 
-_See code: [src/commands/tasks/families.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/tasks/families.ts)_
+_See code: [src/commands/tasks/families.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/tasks/families.ts)_
 
 ## `sucre tasks:run`
 
@@ -188,5 +188,5 @@ ALIASES
   $ sucre run
 ```
 
-_See code: [src/commands/tasks/run.ts](https://github.com/mateomurphy/sucre/blob/v0.4.1/src/commands/tasks/run.ts)_
+_See code: [src/commands/tasks/run.ts](https://github.com/mateomurphy/sucre/blob/v0.4.2/src/commands/tasks/run.ts)_
 <!-- commandsstop -->

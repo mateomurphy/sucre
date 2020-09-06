@@ -1,7 +1,7 @@
 {
   "name": "sucre",
   "description": "ECS helper",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Mateo Murphy @mateomurphy",
   "bin": {
     "sucre": "./bin/run"
