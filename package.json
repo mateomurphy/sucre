@@ -15,7 +15,7 @@
     "aws-sdk": "^2.444.0",
     "chalk": "^4.1.0",
     "cli-cursor": "^3.1.0",
-    "cli-ux": "^5.5.0",
+    "cli-ux": "^5.2.1",
     "console-clear": "^1.1.1",
     "date-fns": "^2.0.0",
     "date-fns-tz": "^1.0.10",

@@ -41,7 +41,6 @@ export default abstract class extends Command {
   }
 
   async init() {
-    console.log("init");
     this.params = this.parse(this.constructor as typeof Command);
     this.userConfig = (await readConfig("sucre.json")) as UserConfig;
 
