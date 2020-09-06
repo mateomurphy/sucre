@@ -14,8 +14,12 @@ export class RunCommand extends Command {
   static strict = false;
   static flags = {
     cluster: flags.string({
-      char: "c",
+      char: "C",
       description: "the cluster to run on",
+    }),
+    container: flags.string({
+      char: "c",
+      description: "the container to use",
     }),
     "log-group-name": flags.string(),
     "log-stream-name-prefix": flags.string(),
@@ -23,12 +27,17 @@ export class RunCommand extends Command {
       char: "t",
       description: "the task definition to use",
     }),
+    "task-definition-path": flags.string({
+      char: "f",
+      description: "the path to a task definition json file",
+    }),
   };
 
   async run() {
-    const { argv, flags } = this.parse(RunCommand);
+    const { argv } = this.parse(RunCommand);
 
     const cluster = this.getFlag("cluster");
+    const container = this.getFlag("container");
     const taskDefinition = this.getFlag("task-definition");
     const command = argv.flatMap((arg) => arg.split(" "));
 
@@ -39,7 +48,7 @@ export class RunCommand extends Command {
         containerOverrides: [
           {
             command: command,
-            name: taskDefinition,
+            name: container,
           },
         ],
       },
@@ -76,12 +85,13 @@ export class RunCommand extends Command {
   }
 
   async fetchLogs(taskUid: string) {
+    const container = this.getFlag("container");
     const logGroupName = this.getFlag("log-group-name");
     const logStreamNamePrefix = this.getFlag("log-stream-name-prefix");
 
     const params = {
       logGroupName,
-      logStreamName: `${logStreamNamePrefix}${taskUid}`,
+      logStreamName: `${logStreamNamePrefix}/${container}/${taskUid}`,
       startFromHead: true,
     };
 

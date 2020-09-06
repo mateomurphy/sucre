@@ -8,3 +8,4 @@ node_modules
 /sucre.json
 /tsconfig.tsbuildinfo
 /lib
+/task-definition.json

@@ -5,15 +5,17 @@ import * as path from "path";
 
 AWS.config.update({ region: "us-east-1" });
 
-interface UserConfig {
+type UserConfig = {
   cluster?: string;
+  container?: string;
   "log-group-name"?: string;
   "log-stream-name-prefix"?: string;
   "task-definition"?: string;
-}
+  "task-definition-path"?: string;
+};
 
-async function readUserConfig(): Promise<UserConfig> {
-  const configPath = path.join(process.cwd(), "sucre.json");
+async function readConfig(filePath: string): Promise<Record<string, any>> {
+  const configPath = path.join(process.cwd(), filePath);
 
   try {
     await fs.promises.access(configPath);
@@ -39,8 +41,54 @@ export default abstract class extends Command {
   }
 
   async init() {
-    this.params = this.parse(<typeof Command>this.constructor);
-    this.userConfig = await readUserConfig();
+    console.log("init");
+    this.params = this.parse(this.constructor as typeof Command);
+    this.userConfig = (await readConfig("sucre.json")) as UserConfig;
+
+    const taskDefinitionPath = this.getFlag("task-definition-path");
+
+    if (taskDefinitionPath) {
+      await this.parseTaskDefinition(
+        taskDefinitionPath,
+        this.getFlag("container")
+      );
+    }
+  }
+
+  async parseTaskDefinition(filePath: string, containerName: string) {
+    const taskDefinition = (await readConfig(
+      filePath
+    )) as AWS.ECS.TaskDefinition;
+
+    if (!taskDefinition.containerDefinitions) {
+      throw "Task definition missing container definitions";
+    }
+
+    let container = null;
+
+    if (containerName) {
+      taskDefinition.containerDefinitions.forEach((definition) => {
+        if (definition.name === containerName) {
+          container = definition;
+        }
+      });
+    }
+
+    if (!container) {
+      container = taskDefinition.containerDefinitions[0];
+      this.userConfig["container"] = container.name;
+    }
+
+    if (
+      container.logConfiguration &&
+      container.logConfiguration.logDriver === "awslogs" &&
+      container.logConfiguration.options
+    ) {
+      this.userConfig["log-group-name"] =
+        container.logConfiguration.options["awslogs-group"];
+      this.userConfig["log-stream-name-prefix"] =
+        container.logConfiguration.options["awslogs-stream-prefix"];
+    }
   }
 
   getFlag(key: string) {
