@@ -18,7 +18,7 @@ export class ServicesInfoCommand extends Command {
 
   static flags = {
     cluster: flags.string({
-      char: "c",
+      char: "C",
       description: "the cluster of the service",
     }),
     watch: flags.boolean({

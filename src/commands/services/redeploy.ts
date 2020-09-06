@@ -9,13 +9,13 @@ export class ServicesRedeployCommand extends Command {
 
   static flags = {
     cluster: flags.string({
-      char: "c",
+      char: "C",
       description: "the cluster of the service",
     }),
   };
 
   async run() {
-    const { args, flags } = this.parse(ServicesRedeployCommand);
+    const { args } = this.parse(ServicesRedeployCommand);
     const serviceName = args.serviceName;
 
     const cluster = this.getFlag("cluster");

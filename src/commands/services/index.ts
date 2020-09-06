@@ -9,7 +9,7 @@ export class ServicesCommand extends Command {
 
   static flags = {
     cluster: flags.string({
-      char: "c",
+      char: "C",
       description: "the cluster of the services",
     }),
   };

@@ -10,7 +10,7 @@ export class StreamsCommand extends Command {
   static args = [{ name: "logGroupNamePrefix" }];
 
   async run() {
-    const { args, flags } = this.parse(StreamsCommand);
+    const { args } = this.parse(StreamsCommand);
     const logGroupNamePrefix = args.logGroupNamePrefix;
 
     const params = {
