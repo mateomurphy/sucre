@@ -28,7 +28,10 @@ export class StreamsCommand extends Command {
       orderBy: "LastEventTime",
     };
 
-    for await (let value of paginateManually(cwl.describeLogStreams, params)) {
+    for await (const value of paginateManually(
+      cwl.describeLogStreams,
+      params
+    )) {
       renderLogStreams(value);
     }
   }

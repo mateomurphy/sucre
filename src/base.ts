@@ -1,4 +1,4 @@
-import Command, { flags } from "@oclif/command";
+import Command from "@oclif/command";
 import AWS from "aws-sdk";
 import * as fs from "fs";
 import * as path from "path";
@@ -22,8 +22,9 @@ async function readConfig(filePath: string): Promise<Record<string, any>> {
     return JSON.parse(
       await fs.promises.readFile(configPath, { encoding: "utf8" })
     );
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
   }
 
   return {};
@@ -60,7 +61,7 @@ export default abstract class extends Command {
     )) as AWS.ECS.TaskDefinition;
 
     if (!taskDefinition.containerDefinitions) {
-      throw "Task definition missing container definitions";
+      throw new Error("Task definition missing container definitions");
     }
 
     let container = null;
@@ -75,7 +76,7 @@ export default abstract class extends Command {
 
     if (!container) {
       container = taskDefinition.containerDefinitions[0];
-      this.userConfig["container"] = container.name;
+      this.userConfig.container = container.name;
     }
 
     if (
@@ -91,6 +92,6 @@ export default abstract class extends Command {
   }
 
   getFlag(key: string) {
-    return this.params.flags[key] || this.userConfig[<keyof UserConfig>key];
+    return this.params.flags[key] || this.userConfig[key as keyof UserConfig];
   }
 }

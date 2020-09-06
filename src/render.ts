@@ -9,6 +9,8 @@ import {
   resourceName,
 } from "./utils";
 
+type LogGroup = AWS.CloudWatchLogs.LogGroup;
+
 export function renderLogGroups(
   data: AWS.CloudWatchLogs.DescribeLogGroupsResponse
 ) {
@@ -19,14 +21,16 @@ export function renderLogGroups(
   cli.table(data.logGroups, {
     logStreamName: {
       header: "Name",
-      get: (row) => colors.cyan(row.logGroupName || ""),
+      get: (row: LogGroup) => colors.cyan(row.logGroupName || ""),
     },
     creationTime: {
       header: "Creation Time",
-      get: (row) => colors.green(formatTimestamp(row.creationTime)),
+      get: (row: LogGroup) => colors.green(formatTimestamp(row.creationTime)),
     },
   });
 }
+
+type LogStream = AWS.CloudWatchLogs.LogStream;
 
 export function renderLogStreams(
   data: AWS.CloudWatchLogs.DescribeLogStreamsResponse
@@ -38,18 +42,21 @@ export function renderLogStreams(
   cli.table(data.logStreams, {
     logStreamName: {
       header: "Name",
-      get: (row) => colors.cyan(row.logStreamName || ""),
+      get: (row: LogStream) => colors.cyan(row.logStreamName || ""),
     },
     lastEventTimestamp: {
       header: "Last Event",
-      get: (row) => colors.yellow(formatTimestamp(row.lastEventTimestamp)),
+      get: (row: LogStream) =>
+        colors.yellow(formatTimestamp(row.lastEventTimestamp)),
     },
     creationTime: {
       header: "Creation Time",
-      get: (row) => colors.green(formatTimestamp(row.creationTime)),
+      get: (row: LogStream) => colors.green(formatTimestamp(row.creationTime)),
     },
   });
 }
+
+type Service = AWS.ECS.Service;
 
 export function renderServices(data: AWS.ECS.DescribeServicesResponse) {
   if (!data.services) {
@@ -59,15 +66,15 @@ export function renderServices(data: AWS.ECS.DescribeServicesResponse) {
   cli.table(data.services, {
     name: {
       header: "Name",
-      get: (row) => colors.cyan(row.serviceName || "Unknown"),
+      get: (row: Service) => colors.cyan(row.serviceName || "Unknown"),
     },
     status: {
       header: "Status",
-      get: (row) => coloredStatus(row.status),
+      get: (row: Service) => coloredStatus(row.status),
     },
     taskDefinition: {
       header: "Task definition",
-      get: (row) => {
+      get: (row: Service) => {
         return resourceName(row.taskDefinition);
       },
     },
@@ -83,6 +90,8 @@ export function renderServices(data: AWS.ECS.DescribeServicesResponse) {
   });
 }
 
+type ServiceEvent = AWS.ECS.ServiceEvent;
+
 export function renderServiceEvents(data: AWS.ECS.DescribeServicesResponse) {
   if (!data.services) {
     return "No data";
@@ -93,11 +102,11 @@ export function renderServiceEvents(data: AWS.ECS.DescribeServicesResponse) {
   cli.table(events, {
     createdAt: {
       header: "Time",
-      get: (row) => colors.yellow(formatDate(row.createdAt)),
+      get: (row: ServiceEvent) => colors.yellow(formatDate(row.createdAt)),
     },
     message: {
       header: "Message",
-      get: (row) => formatServiceEventMessage(row.message),
+      get: (row: ServiceEvent) => formatServiceEventMessage(row.message),
     },
     id: { header: "ID", extended: true },
   });
@@ -128,6 +137,8 @@ export function renderServiceInfo(data: AWS.ECS.DescribeServicesResponse) {
   cli.table(tableData, { name: { minWidth: 17 }, value: {} });
 }
 
+type Task = AWS.ECS.Task;
+
 export function renderTasks(data: AWS.ECS.DescribeTasksResponse) {
   if (!data.tasks) {
     return "No data";
@@ -136,19 +147,19 @@ export function renderTasks(data: AWS.ECS.DescribeTasksResponse) {
   cli.table(data.tasks, {
     taskArn: {
       header: "Task",
-      get: (row) => colors.cyan(resourceName(row.taskArn)),
+      get: (row: Task) => colors.cyan(resourceName(row.taskArn)),
     },
     taskDefinitionArn: {
       header: "Task definition",
-      get: (row) => resourceName(row.taskDefinitionArn),
+      get: (row: Task) => resourceName(row.taskDefinitionArn),
     },
     lastStatus: {
       header: "Last status",
-      get: (row) => coloredStatus(row.lastStatus),
+      get: (row: Task) => coloredStatus(row.lastStatus),
     },
     desiredStatus: {
       header: "Desired status",
-      get: (row) => row.lastStatus,
+      get: (row: Task) => row.lastStatus,
     },
     group: {},
     launchType: {},

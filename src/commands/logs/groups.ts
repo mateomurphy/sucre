@@ -18,7 +18,7 @@ export class StreamsCommand extends Command {
       logGroupNamePrefix: logGroupNamePrefix,
     };
 
-    for await (let value of paginateManually(cwl.describeLogGroups, params)) {
+    for await (const value of paginateManually(cwl.describeLogGroups, params)) {
       renderLogGroups(value);
     }
   }

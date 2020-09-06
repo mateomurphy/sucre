@@ -16,7 +16,7 @@ export class ServicesInfoCommand extends Command {
 
   static args = [{ name: "serviceName" }];
 
-  static flags = {
+  static flags: Record<string, any> = {
     cluster: flags.string({
       char: "C",
       description: "the cluster of the service",
@@ -28,9 +28,9 @@ export class ServicesInfoCommand extends Command {
   };
 
   async run() {
-    const { args, flags } = this.parse(ServicesInfoCommand);
+    const { args } = this.parse(ServicesInfoCommand);
     const serviceName = args.serviceName;
-    const watch = flags.watch;
+    const watch = this.getFlag("watch");
     const cluster = this.getFlag("cluster");
 
     poll(watch, async () => {
@@ -58,10 +58,9 @@ export class ServicesInfoCommand extends Command {
         renderTasks(taskData);
         log();
         renderServiceEvents(services);
-      } catch (ex) {
-        console.log("error");
-        console.error(ex);
-        return;
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
       }
     });
   }

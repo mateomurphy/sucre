@@ -9,7 +9,7 @@ export class LogsCommand extends Command {
 
   static args = [{ name: "logGroupName" }];
 
-  static flags = {
+  static flags: Record<string, any> = {
     end: flags.string({
       char: "e",
       description: "end of the time range",
@@ -33,23 +33,23 @@ export class LogsCommand extends Command {
   lastSeenTime: number | undefined;
 
   async run() {
-    const { args, flags } = this.parse(LogsCommand);
+    const { args } = this.parse(LogsCommand);
     const logGroupName = args.logGroupName;
-    const startTime = handleTime(flags.start);
-    const endTime = handleTime(flags.end);
+    const startTime = handleTime(this.getFlag("start"));
+    const endTime = handleTime(this.getFlag("end"));
 
-    var params = {
+    const params = {
       endTime: endTime,
       interleaved: true,
-      limit: flags.num || 1000,
+      limit: this.getFlag("num") || 1000,
       logGroupName: logGroupName,
-      logStreamNamePrefix: flags.prefix,
+      logStreamNamePrefix: this.getFlag("prefix"),
       startTime: startTime,
     };
 
     this.fetch(params);
 
-    if (flags.tail) {
+    if (this.getFlag("tail")) {
       delete params.endTime;
       delete params.limit;
 
@@ -63,7 +63,7 @@ export class LogsCommand extends Command {
   }
 
   async fetch(params: AWS.CloudWatchLogs.FilterLogEventsRequest) {
-    for await (let data of paginate(cwl.filterLogEvents, params)) {
+    for await (const data of paginate(cwl.filterLogEvents, params)) {
       this.renderLogEvents(data);
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop, @typescript-eslint/no-use-before-define */
 import { FilteredLogEvent } from "aws-sdk/clients/cloudwatchlogs";
 import { cli } from "cli-ux";
 import colors from "chalk";
@@ -6,7 +7,6 @@ import { format as dateFormat } from "date-fns-tz";
 import parseDuration from "parse-duration";
 import { format, inspect } from "util";
 import { parse as parseArn } from "@sandfox/arn";
-import { basename } from "path";
 
 const green = [
   "PRIMARY",
@@ -136,12 +136,12 @@ export async function* paginateManually(func: Function, params: any) {
 
     try {
       await cli.anykey();
-    } catch (err) {
-      if (err.message === "quit") {
+    } catch (error) {
+      if (error.message === "quit") {
         break;
       }
 
-      throw err;
+      throw error;
     }
   } while (true);
 }

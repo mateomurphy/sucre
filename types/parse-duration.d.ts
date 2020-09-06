@@ -1,4 +1,3 @@
-export = index;
 declare function index(str: any): number;
 declare namespace index {
   const d: number;
@@ -26,3 +25,4 @@ declare namespace index {
   const yr: number;
   const μs: number;
 }
+export = index;

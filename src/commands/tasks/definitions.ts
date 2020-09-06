@@ -4,7 +4,9 @@ import { paginateManually, resourceName } from "../../utils";
 
 export class TasksDefinitionsCommand extends Command {
   static description = `list task definitions`;
+
   static flags = {};
+
   static args = [{ name: "familyPrefix" }];
 
   async run() {
@@ -14,7 +16,10 @@ export class TasksDefinitionsCommand extends Command {
       maxResults: 20,
     };
 
-    for await (let value of paginateManually(ecs.listTaskDefinitions, params)) {
+    for await (const value of paginateManually(
+      ecs.listTaskDefinitions,
+      params
+    )) {
       value.taskDefinitionArns.forEach((arn: string) => {
         this.log(resourceName(arn));
       });

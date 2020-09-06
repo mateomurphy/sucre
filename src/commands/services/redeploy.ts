@@ -28,6 +28,7 @@ export class ServicesRedeployCommand extends Command {
 
     const data = await ecs.updateService(params);
 
+    // eslint-disable-next-line no-console
     console.log(data);
   }
 }

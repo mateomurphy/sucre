@@ -10,8 +10,11 @@ import { formatTimestamp, resourceName } from "../../utils";
 
 export class RunCommand extends Command {
   static aliases = ["run"];
+
   static description = `run a one-off process inside a container`;
+
   static strict = false;
+
   static flags = {
     cluster: flags.string({
       char: "C",
@@ -71,7 +74,7 @@ export class RunCommand extends Command {
         format("Started task %s", colors.cyan(resourceName(taskArn)))
       );
 
-      const result = await ecs.waitFor("tasksStopped", {
+      await ecs.waitFor("tasksStopped", {
         cluster: cluster,
         tasks: [taskArn],
       });
