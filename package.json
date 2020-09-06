@@ -10,7 +10,7 @@
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
-    "@oclif/plugin-help": "^2",
+    "@oclif/plugin-help": "^3",
     "@sandfox/arn": "^2.1.0",
     "aws-sdk": "^2.444.0",
     "chalk": "^4.1.0",
@@ -26,20 +26,22 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
-    "@oclif/tslint": "^3",
     "@types/chai": "^4",
     "@types/mocha": "^5",
     "@types/node": "^10",
     "chai": "^4",
+    "eslint": "^5.13",
+    "eslint-config-oclif": "^3.1",
+    "eslint-config-oclif-typescript": "^0.1",
+    "eslint-config-prettier": "^6.11.0",
     "globby": "^8",
     "mocha": "^5",
     "nyc": "^13",
     "ts-node": "^8",
-    "tslint": "^5",
     "typescript": "^3.3"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.1.0"
   },
   "files": [
     "/bin",
@@ -63,7 +65,7 @@
   "repository": "mateomurphy/sucre",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "tslint -p test -t stylish",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
