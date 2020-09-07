@@ -21,6 +21,11 @@ export class ServicesInfoCommand extends Command {
       char: "C",
       description: "the cluster of the service",
     }),
+    service: flags.string({
+      char: "s",
+      description: "the name of the service",
+      required: true,
+    }),
     watch: flags.boolean({
       char: "w",
       description: "watch for changes",
@@ -28,8 +33,7 @@ export class ServicesInfoCommand extends Command {
   };
 
   async run() {
-    const { args } = this.parse(ServicesInfoCommand);
-    const serviceName = args.serviceName;
+    const serviceName = this.getFlag("service");
     const watch = this.getFlag("watch");
     const cluster = this.getFlag("cluster");
 
