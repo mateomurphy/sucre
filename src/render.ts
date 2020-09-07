@@ -56,6 +56,25 @@ export function renderLogStreams(
   });
 }
 
+type Parameter = AWS.SSM.Parameter;
+
+export function renderParameters(data: AWS.SSM.ParameterList, path: string) {
+  if (!data) {
+    return "No data";
+  }
+
+  cli.table(data, {
+    Name: {
+      header: "Name",
+      get: (row: Parameter) => colors.green((row.Name || "").replace(path, "")),
+    },
+    Value: {
+      header: "Value",
+      get: (row: Parameter) => row.Value,
+    },
+  });
+}
+
 type Service = AWS.ECS.Service;
 
 export function renderServices(data: AWS.ECS.DescribeServicesResponse) {

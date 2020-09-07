@@ -126,8 +126,14 @@ export async function* paginate(func: Function, params: any) {
     const result = await func(requestParams);
     yield result;
 
-    requestParams = { ...params, nextToken: result.nextToken };
-  } while (requestParams.nextToken);
+    if ("nextToken" in result) {
+      requestParams = { ...params, nextToken: result.nextToken };
+    } else if ("NextToken" in result) {
+      requestParams = { ...params, NextToken: result.NextToken };
+    } else {
+      requestParams = { ...params };
+    }
+  } while (requestParams.nextToken || requestParams.NextToken);
 }
 
 export async function* paginateManually(func: Function, params: any) {
@@ -137,7 +143,7 @@ export async function* paginateManually(func: Function, params: any) {
     const { value } = await iterator.next();
     yield value;
 
-    if (!value.nextToken) {
+    if (!value.nextToken && !value.NextToken) {
       break;
     }
 
