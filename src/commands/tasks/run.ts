@@ -6,7 +6,7 @@ import cli from "cli-ux";
 import { format } from "util";
 import cwl from "../../api/cwl";
 import ecs from "../../api/ecs";
-import { formatTimestamp, resourceName } from "../../utils";
+import { flatMap, formatTimestamp, resourceName } from "../../utils";
 
 export class RunCommand extends Command {
   static aliases = ["run"];
@@ -42,7 +42,7 @@ export class RunCommand extends Command {
     const cluster = this.getFlag("cluster");
     const container = this.getFlag("container");
     const taskDefinition = this.getFlag("task-definition");
-    const command = argv.flatMap((arg) => arg.split(" "));
+    const command = flatMap(argv, (arg) => arg.split(" "));
 
     const params = {
       cluster: cluster,

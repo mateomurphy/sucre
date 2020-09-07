@@ -56,6 +56,13 @@ export function coloredStatus(string: string | undefined) {
   return string;
 }
 
+export function flatMap<T, U>(array: T[], mapFunc: (x: T) => U[]): U[] {
+  return array.reduce(
+    (cumulus: U[], next: T) => [...mapFunc(next), ...cumulus],
+    [] as U[]
+  );
+}
+
 export function handleTime(string: string | undefined) {
   const now = new Date().getTime();
 
